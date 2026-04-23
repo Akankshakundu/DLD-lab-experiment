@@ -1,16 +1,19 @@
-module mux8x1(input [7:0] I, input [2:0] SEL, output reg Y);
+module mux2x1(input A,B,SEL, output Y);
+assign Y = SEL ? B : A;
+endmodule
 
-always @(*) begin
-case(SEL)
-3'b000: Y=I[0];
-3'b001: Y=I[1];
-3'b010: Y=I[2];
-3'b011: Y=I[3];
-3'b100: Y=I[4];
-3'b101: Y=I[5];
-3'b110: Y=I[6];
-3'b111: Y=I[7];
-endcase
-end
+module mux8_using_2(input [7:0] I, input [2:0] S, output Y);
+
+wire w1,w2,w3,w4,w5,w6;
+
+mux2x1 m1(I[0],I[1],S[0],w1);
+mux2x1 m2(I[2],I[3],S[0],w2);
+mux2x1 m3(I[4],I[5],S[0],w3);
+mux2x1 m4(I[6],I[7],S[0],w4);
+
+mux2x1 m5(w1,w2,S[1],w5);
+mux2x1 m6(w3,w4,S[1],w6);
+
+mux2x1 m7(w5,w6,S[2],Y);
 
 endmodule
